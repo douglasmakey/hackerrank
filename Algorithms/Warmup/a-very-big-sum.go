@@ -2,34 +2,50 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"math"
 )
 
-func main() {
-	// Number of size array
-	var n int
-	var num int
-	var sum int
+func main()  {
+	var numbers []int
+	var result []int
 
-	n = readNumber()
+	for {
+		var n int
+		_, err := fmt.Scan(&n)
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				panic(err)
+			}
+		}
 
-	for i:=1; i <= n; i++ {
-		num = readNumber()
-		if 0 <= num && num <= int(math.Pow(10,10))  {
-			sum += num
+		if n >= 1 && n <= int(math.Pow(10,9)) {
+			numbers = append(numbers, n)
 		}
 	}
 
-	fmt.Println(sum)
+	for _, value := range numbers {
+		var sumArray int
+		for _, j := range numbers {
+			sumArray = sumArray + j
+		}
 
-}
-
-func readNumber() int {
-	var n int
-	_, err := fmt.Scan(&n)
-	if err != nil {
-		panic(err)
+		result = append(result, sumArray - value)
 	}
 
-	return n
+
+	smallest, biggest := result[0], result[0]
+	for _, v := range result {
+		if v > biggest {
+			biggest = v
+		}
+		if v < smallest {
+			smallest = v
+		}
+	}
+
+	fmt.Println(smallest, biggest)
+
 }
